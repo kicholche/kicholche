@@ -1,6 +1,3 @@
-create index if not exists idx_analytics_events_event_route_created on public.analytics_events(event_name, route, created_at desc);
-create index if not exists idx_analytics_events_heartbeat on public.analytics_events(created_at desc) where event_name='visitor_heartbeat';
-
 drop policy if exists "public insert analytics" on public.analytics_events;
 create policy "public insert analytics" on public.analytics_events
 for insert to anon, authenticated
