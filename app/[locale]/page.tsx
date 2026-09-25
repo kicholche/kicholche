@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import MobileMenu from "@/components/MobileMenu";
+import HomeHeroCarousel from "@/components/HomeHeroCarousel";
 
 type Locale = "bn" | "hi" | "en";
 const locales: Locale[] = ["bn","hi","en"];
@@ -54,6 +55,7 @@ export default async function LocaleHomePage({params}:{params:Promise<{locale:st
  const homepageUrl=publicMedia(s,mediaRows,"homepage"); const trendUrl=publicMedia(s,mediaRows,"trending"); const jobUrl=publicMedia(s,mediaRows,"job");
  const heroTitle=hero?titleOf(hero,locale):demoArticles[0].title[locale]; const heroExcerpt=hero?excerptOf(hero,locale):t.desc;
  const heroTag=categoryName(hero,locale,demoArticles[0].tag[locale]);
+ const carouselSlides=(realArticles.length?realArticles.slice(0,6):demoArticles).map((row:any,i:number)=>{const demo=realArticles.length?null:demoArticles[i%demoArticles.length];const rowMedia=row?.featured_media_id?mediaRows.find((m:any)=>m.id===row.featured_media_id):null;const image=rowMedia?s.storage.from("media").getPublicUrl(rowMedia.storage_path).data.publicUrl:(realArticles.length?"":(i===0?homepageUrl:""));return {id:row?.id||String(i),title:titleOf(row,locale)||demo?.title[locale]||"",excerpt:excerptOf(row,locale)||t.desc,tag:categoryName(row,locale,demo?.tag[locale]||t.news),href:row?.slug?"/article?slug="+encodeURIComponent(row.slug)+"&locale="+locale:prefix+"/news",image:image||undefined,alt:rowMedia?.alt_text||titleOf(row,locale)}});
  return <main className="kc">
   <div className="topbar"><div className="topbar-inner"><span>● {t.location}</span><span>{t.date}</span><span>{t.today}</span><i/><LanguageSwitcher/><ThemeToggle/></div></div>
   <header className="desktop-header"><div className="head-main"><Logo locale={locale}/><form className="search" action="/search"><input type="hidden" name="locale" value={locale}/><input name="q" placeholder={t.search}/><button aria-label={t.searchBtn}>⌕</button></form><div className="head-actions"><Link href={prefix+"/news"}>◉</Link><Link href={"/account?locale="+locale}>♙</Link></div></div>
@@ -63,7 +65,7 @@ export default async function LocaleHomePage({params}:{params:Promise<{locale:st
   <div className="mobile-search"><form action="/search"><input type="hidden" name="locale" value={locale}/><input name="q" placeholder={t.search}/><button>{t.searchBtn}</button></form></div>
   {show("breaking")&&<div className="ticker"><b>⚡ {t.breaking}</b><span>{heroTitle}</span><strong>›</strong></div>}
   <div className="wrap">
-   {show("hero")&&<section className="hero"><article className="hero-main"><Visual kind="mountain" src={heroUrl||undefined} alt={heroMedia?.alt_text||heroTitle}/><div className="hero-overlay"><span>{heroTag} · ২ {t.hours}</span><h1>{heroTitle}</h1><p>{heroExcerpt}</p><Link href={hero?"/article?slug="+encodeURIComponent(hero.slug)+"&locale="+locale:prefix+"/news"}>{t.read}</Link></div></article>
+   {show("hero")&&<section className="hero"><HomeHeroCarousel slides={carouselSlides}/>
     <aside className="latest-side"><div className="section-head"><h2>{t.latest}</h2><Link href={prefix+"/news"}>{t.all}</Link></div>{latest.slice(0,4).map((row:any,i:number)=>{const title=titleOf(row,locale);const demo=realArticles.length?null:demoArticles[i];return <Link className="side-story" href={row.slug?"/article?slug="+encodeURIComponent(row.slug)+"&locale="+locale:prefix+"/news"} key={row.id||i}><Visual kind={demo?.visual||["building","students","office","result"][i]} src={!realArticles.length?undefined:(i===0?heroUrl:"")} /><div><small>{categoryName(row,locale,demo?.tag[locale])}</small><h3>{title}</h3><span>{20+i*3} {t.minutes}</span></div></Link>})}</aside>
    </section>}
    <section className="quick-grid">
