@@ -1,5 +1,3 @@
-[Reading 17 lines from start (total: 17 lines, 0 remaining)]
-
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
