@@ -1,3 +1,5 @@
+[Reading 65 lines from start (total: 65 lines, 0 remaining)]
+
 import Link from "next/link";
 
 const nav = ["খবর","চাকরি","শিক্ষা","রেজাল্ট","সরকারি আপডেট","খেলাধুলা","আবহাওয়া","জেলা","ভারত","বিশ্ব"];
@@ -18,7 +20,7 @@ export default function LocaleHomePage() {
     <header className="desktop-header">
       <div className="topbar">
         <Link className="brand" href="/bn"><span className="brand-mark">কি</span><span className="brand-red">চলছে</span></Link>
-        <div className="search"><span>⌕</span><input placeholder="খবর, চাকরি, রেজাল্ট বা যেকোনো কিছু খুঁজুন..." /><button>খুঁজুন</button></div>
+        <form className="search" action="/search"><span>⌕</span><input name="q" placeholder="খবর, চাকরি, রেজাল্ট বা যেকোনো কিছু খুঁজুন..." /><button>খুঁজুন</button></form>
         <div className="header-actions"><button>🔔</button><button>☾</button><button>☰</button></div>
       </div>
       <nav className="main-nav">{nav.map((x,i)=><Link key={x} href={i===0?"/bn/news":"#"}>{x}</Link>)}<Link href="/ai-tools">AI Tools</Link><button>বাংলা ▾</button></nav>
@@ -63,3 +65,5 @@ export default function LocaleHomePage() {
     <nav className="bottom-nav"><Link href="/bn">⌂<span>Home</span></Link><Link href="/bn/news">▤<span>News</span></Link><Link href="/bn/jobs">💼<span>Jobs</span></Link><Link href="/ai-tools">✦<span>Tools</span></Link><Link href="/account">◉<span>Account</span></Link></nav>
   </main>;
 }
+
+[executed on device: DESKTOP-R4EIOQN (2c64c727-0f9e-4db1-8d42-1bcb315452e0)]
