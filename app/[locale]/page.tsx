@@ -1,5 +1,3 @@
-[Reading 65 lines from start (total: 65 lines, 0 remaining)]
-
 import Link from "next/link";
 
 const nav = ["খবর","চাকরি","শিক্ষা","রেজাল্ট","সরকারি আপডেট","খেলাধুলা","আবহাওয়া","জেলা","ভারত","বিশ্ব"];
