@@ -1,4 +1,7 @@
 import Link from "next/link";
-export default function JobPage() {
-  return <main className="placeholder-page"><Link href="/bn/jobs">← চাকরি</Link><h1>চাকরির বিস্তারিত</h1><p>যোগ্যতা, salary, vacancy, dates এবং official apply link এখানে থাকবে।</p></main>;
-}
+import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+type P={searchParams:Promise<{slug?:string;locale?:string}>};
+export async function generateMetadata({searchParams}:P):Promise<Metadata>{const p=await searchParams;const s=await createClient();const {data}=await s.from("jobs").select("slug,company,location,salary_text,job_translations(title,description,locale)").eq("slug",p.slug||"").maybeSingle();const t=(data?.job_translations||[]).find((x:any)=>x.locale===(p.locale||"bn"))||data?.job_translations?.[0];return {title:t?.title||"Job",description:t?.description||"Kicholche jobs",openGraph:{title:t?.title||"Kicholche Jobs",description:t?.description||""}}}
+export default async function JobPage({searchParams}:P){const p=await searchParams;const locale=p.locale||"bn";const s=await createClient();const {data}=await s.from("jobs").select("id,slug,company,location,salary_text,description,job_translations(title,description,locale)").eq("slug",p.slug||"").eq("status","published").maybeSingle();if(!data)notFound();const t=(data.job_translations||[]).find((x:any)=>x.locale===locale)||data.job_translations?.[0];return <main className="placeholder-page"><Link href={`/${locale}/jobs`}>← Jobs</Link><article><small>{data.company||"Kicholche"} · {data.location||"India"}</small><h1>{t?.title||data.slug}</h1><b>{data.salary_text||"Salary details in notice"}</b><div style={{whiteSpace:"pre-wrap"}}>{t?.description||data.description||""}</div><button className="admin-btn">Apply / Official Link</button></article></main>}

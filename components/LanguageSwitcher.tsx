@@ -1,0 +1,5 @@
+"use client";
+import {useEffect,useState} from "react";
+import {usePathname,useRouter} from "next/navigation";
+const locales=["bn","hi","en"] as const;
+export default function LanguageSwitcher(){const path=usePathname();const router=useRouter();const current=path.match(/^\/(bn|hi|en)(?:\/|$)/)?.[1]||"bn";const [value,setValue]=useState(current);useEffect(()=>{const saved=localStorage.getItem("kicholche_locale");if(saved&&locales.includes(saved as any)&&saved!==current){const next=path.replace(/^\/(bn|hi|en)(?=\/|$)/,"/"+saved);router.replace(next||"/"+saved)}else localStorage.setItem("kicholche_locale",current)},[path,current,router]);function change(v:string){setValue(v);localStorage.setItem("kicholche_locale",v);const next=path.match(/^\/(bn|hi|en)(.*)$/);router.push(next?"/"+v+next[2]:"/"+v)}return <select className="locale-switcher" value={value} onChange={e=>change(e.target.value)} aria-label="Language"><option value="bn">বাংলা</option><option value="hi">हिन्दी</option><option value="en">English</option></select>}
