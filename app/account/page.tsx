@@ -1,4 +1,3 @@
-import Link from "next/link";
-export default function AccountPage() {
-  return <main className="placeholder-page"><Link href="/bn">← Kicholche</Link><h1>Account</h1><p>Login optional. Favorites ও preferences এখানে sync করা যাবে।</p></main>;
-}
+import Link from "next/link";import { redirect } from "next/navigation";import { createClient } from "@/lib/supabase/server";
+async function logout(){"use server";const s=await createClient();await s.auth.signOut();redirect("/bn");}
+export default async function Account(){const s=await createClient();const {data:{user}}=await s.auth.getUser();if(!user)return <main className="placeholder-page"><Link href="/bn">← Kicholche</Link><h1>Account</h1><p>আপনি এখনো login করেননি।</p><Link className="admin-btn" href="/login">Login / Register</Link></main>;const {data:p}=await s.from("profiles").select("display_name,role").eq("id",user.id).maybeSingle();return <main className="placeholder-page"><Link href="/bn">← Kicholche</Link><h1>Account</h1><p>{p?.display_name||user.email}</p><p>Role: {p?.role||"USER"}</p>{p&&["ADMIN","MANAGER"].includes(p.role)&&<p><Link href="/admin/dashboard">Open Admin Dashboard →</Link></p>}<form action={logout}><button className="admin-btn">Logout</button></form></main>}
