@@ -5,6 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import MobileMenu from "@/components/MobileMenu";
 import NotificationBell from "@/components/NotificationBell";
 import HomeHeroCarousel from "@/components/HomeHeroCarousel";
+import MobileReference from "@/components/MobileReference";
 
 type Locale = "bn"|"hi"|"en";
 const locales:Locale[]=["bn","hi","en"];
@@ -29,7 +30,7 @@ function Card({r,l,src}:{r:any,l:Locale,src?:string}){return <Link className="ne
  const A=articles||[],J=jobs||[],M=media||[]; const notifications=user ? [...A.slice(0,5).map((r:any)=>({id:"article-"+r.id,title:titleOf(r,l),href:"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l,type:"News"})),...J.slice(0,3).map((r:any)=>({id:"job-"+r.id,title:titleOf(r,l),href:"/"+l+"/jobs",type:"Jobs"}))] : [];const hero=A.find((x:any)=>x.featured)||A[0];const latest=A.slice(0,5);const trend=A.filter((x:any)=>x.trending).slice(0,5).length?A.filter((x:any)=>x.trending).slice(0,5):A.slice(0,5);
  const hmedia=hero?.featured_media_id?M.find((x:any)=>x.id===hero.featured_media_id):null;const hurl=hmedia?s.storage.from("media").getPublicUrl(hmedia.storage_path).data.publicUrl:mediaUrl(s,M,"homepage")||FALLBACK_IMAGES[0];
  const slidesIndex=(rows:any,r:any)=>Math.max(0,rows.findIndex((x:any)=>x.id===r.id))%FALLBACK_IMAGES.length;
- const slides=A.slice(0,6).map((r:any)=>{const m=r.featured_media_id?M.find((x:any)=>x.id===r.featured_media_id):null;return{id:r.id,title:titleOf(r,l),excerpt:excerptOf(r,l),tag:"Top News",href:r.slug?"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l:pre+"/news",image:m?s.storage.from("media").getPublicUrl(m.storage_path).data.publicUrl:FALLBACK_IMAGES[slidesIndex(A,r)],alt:titleOf(r,l)}}); return <main className="kicholche">
+ const slides=A.slice(0,6).map((r:any)=>{const m=r.featured_media_id?M.find((x:any)=>x.id===r.featured_media_id):null;return{id:r.id,title:titleOf(r,l),excerpt:excerptOf(r,l),tag:"Top News",href:r.slug?"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l:pre+"/news",image:m?s.storage.from("media").getPublicUrl(m.storage_path).data.publicUrl:FALLBACK_IMAGES[slidesIndex(A,r)],alt:titleOf(r,l)}}); return <><div className="reference-mobile-home"><MobileReference screen="home"/></div><main className="kicholche">
  <div className="topline"><span>📍 {t.loc}</span><span>{t.date}</span><span>{t.today}</span><span className="top-spacer"/></div>
  <header className="head"><div className="head-row"><Logo locale={l}/><form className="main-search" action="/search"><input type="hidden" name="locale" value={l}/><input name="q" placeholder={t.search}/><button>⌕</button></form><div className="head-tools"><LanguageSwitcher/><ThemeToggle/>{user&&<NotificationBell locale={l} items={notifications}/>}<MobileMenu locale={l}/></div></div>
  <nav className="nav">{[["",t.home],["/news",t.latest],["/news?breaking=1",t.breaking],["/trending",t.trending],["/news?category=education",t.education],["/news?category=exams",t.exams],["/news?category=results",t.results],["/jobs",t.jobs],["/news?category=government",t.government],["/results?type=lottery",t.lottery],["/news?category=sports",t.sports],["/news?category=business",t.business],["/news?category=entertainment",t.ent],["/news?category=technology",t.technology],["/ai-tools",t.tools]].map(([h,x])=><Link key={x} href={pre+h}>{x}</Link>)}</nav></header>
@@ -44,6 +45,6 @@ function Card({r,l,src}:{r:any,l:Locale,src?:string}){return <Link className="ne
  </div>
  <footer className="footer-slim"><span>কিচলচে</span><b>{t.news}</b><b>{t.jobs}</b><b>{t.education}</b><b>{t.resultsTitle}</b><b>{t.governmentUpdate}</b><b>{t.importantLinks}</b><strong>kicholche.com</strong><small>{t.copyright}</small></footer>
  <nav className="bottom-nav"><Link className="active" href={pre}>⌂<span>{t.home}</span></Link><Link href={pre+"/jobs"}>💼<span>{t.jobs}</span></Link><Link href={pre+"/news"}>⌕<span>{t.latest}</span></Link><Link href={pre+"/ai-tools"}>♧<span>{t.tools}</span></Link><Link href={"/account?locale="+l}>♙<span>{t.account}</span></Link></nav>
- </main>
+ </main></>
 }
 function InfoBox({title,rows,l,type}:{title:string,rows:any[],l:Locale,type?:string}){return <div className="info-box"><div className="sec-title"><h2>{title}</h2><Link href={"/"+l+(type==="job"?"/jobs":"/news")}>{l==="bn"?"সব দেখুন →":l==="hi"?"सभी देखें →":"View all →"}</Link></div>{rows.map((r:any,i:number)=><Link className="mini-row" href={type==="job"?"/"+l+"/jobs":"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l} key={r.id}><Img kind={type==="job"?"job":"news"}/><div><b>{titleOf(r,l)}</b><small>{type==="job"?(r.job_type||"Government Job"):((l==="bn"?"মাধ্যমিক শিক্ষা পর্ষদ":l==="hi"?"माध्यमिक शिक्षा बोर्ड":"Education Board")+"　•　"+(i+2)+(l==="bn"?" ঘণ্টা আগে":l==="hi"?" घंटे पहले":" hours ago"))}</small></div></Link>)}</div>}
