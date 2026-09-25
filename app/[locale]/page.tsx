@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import MobileMenu from "@/components/MobileMenu";
+import NotificationBell from "@/components/NotificationBell";
 import HomeHeroCarousel from "@/components/HomeHeroCarousel";
 
 type Locale = "bn"|"hi"|"en";
@@ -19,19 +20,19 @@ function mediaUrl(s:any,rows:any,purpose:string){const m=rows.find((x:any)=>x.pu
 function Logo({locale}:{locale:Locale}){return <Link className="kc-logo" href={"/"+locale}><span className="kc-logo-icon">ক</span><span><b>কিচলচে</b><small>Kicholche</small></span></Link>}
 function Img({src,kind="news",alt=""}:{src?:string,kind?:string,alt?:string}){const fallback=kind==="job"?FALLBACK_IMAGES[1]:kind==="news"?FALLBACK_IMAGES[2]:FALLBACK_IMAGES[0];return <img className="kc-img" src={src||fallback} alt={alt}/> }
 function Card({r,l,src}:{r:any,l:Locale,src?:string}){return <Link className="news-card" href={r?.slug?"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l:"/"+l+"/news"}><Img src={src} alt={titleOf(r,l)}/><div><small>{catOf(r,l,"News")}</small><h3>{titleOf(r,l)}</h3><p>{excerptOf(r,l)}</p></div></Link>}export default async function LocaleHomePage({params}:{params:Promise<{locale:string}>}){
- const raw=(await params).locale;const l=(locales.includes(raw as Locale)?raw:"bn") as Locale;const t=T[l];const pre="/"+l;const s=await createClient();
+ const raw=(await params).locale;const l=(locales.includes(raw as Locale)?raw:"bn") as Locale;const t=T[l];const pre="/"+l;const s=await createClient(); const {data:{user}}=await s.auth.getUser();
  const [{data:articles},{data:jobs},{data:media}]=await Promise.all([
   s.from("articles").select("id,slug,publish_at,featured,breaking,trending,featured_media_id,article_translations(title,excerpt,locale),categories(slug,name_bn,name_hi,name_en)").eq("status","published").order("publish_at",{ascending:false,nullsFirst:false}).limit(12),
   s.from("jobs").select("id,slug,job_type,location,job_translations(title,locale)").eq("status","published").order("created_at",{ascending:false}).limit(6),
   s.from("media").select("id,storage_path,purpose,alt_text,created_at").in("purpose",["homepage","news_feature","news_thumb","trending","job"]).order("created_at",{ascending:false})
  ]);
- const A=articles||[],J=jobs||[],M=media||[];const hero=A.find((x:any)=>x.featured)||A[0];const latest=A.slice(0,5);const trend=A.filter((x:any)=>x.trending).slice(0,5).length?A.filter((x:any)=>x.trending).slice(0,5):A.slice(0,5);
+ const A=articles||[],J=jobs||[],M=media||[]; const notifications=user ? [...A.slice(0,5).map((r:any)=>({id:"article-"+r.id,title:titleOf(r,l),href:"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l,type:"News"})),...J.slice(0,3).map((r:any)=>({id:"job-"+r.id,title:titleOf(r,l),href:"/"+l+"/jobs",type:"Jobs"}))] : [];const hero=A.find((x:any)=>x.featured)||A[0];const latest=A.slice(0,5);const trend=A.filter((x:any)=>x.trending).slice(0,5).length?A.filter((x:any)=>x.trending).slice(0,5):A.slice(0,5);
  const hmedia=hero?.featured_media_id?M.find((x:any)=>x.id===hero.featured_media_id):null;const hurl=hmedia?s.storage.from("media").getPublicUrl(hmedia.storage_path).data.publicUrl:mediaUrl(s,M,"homepage")||FALLBACK_IMAGES[0];
  const slidesIndex=(rows:any,r:any)=>Math.max(0,rows.findIndex((x:any)=>x.id===r.id))%FALLBACK_IMAGES.length;
  const slides=A.slice(0,6).map((r:any)=>{const m=r.featured_media_id?M.find((x:any)=>x.id===r.featured_media_id):null;return{id:r.id,title:titleOf(r,l),excerpt:excerptOf(r,l),tag:"Top News",href:r.slug?"/article?slug="+encodeURIComponent(r.slug)+"&locale="+l:pre+"/news",image:m?s.storage.from("media").getPublicUrl(m.storage_path).data.publicUrl:FALLBACK_IMAGES[slidesIndex(A,r)],alt:titleOf(r,l)}}); return <main className="kicholche">
  <div className="topline"><span>📍 {t.loc}</span><span>{t.date}</span><span>{t.today}</span><span className="top-spacer"/></div>
- <header className="head"><div className="head-row"><Logo locale={l}/><form className="main-search" action="/search"><input type="hidden" name="locale" value={l}/><input name="q" placeholder={t.search}/><button>⌕</button></form><div className="head-tools"><LanguageSwitcher/><ThemeToggle/><MobileMenu locale={l}/></div></div>
- <nav className="nav">{[["",t.home],["/news",t.latest],["/news?breaking=1",t.breaking],["/trending",t.trending],["/jobs",t.jobs],["/news?category=education",t.education],["/news?category=exams",t.exams],["/news?category=results",t.results],["/news?category=government",t.government],["/results?type=lottery",t.lottery],["/news?category=sports",t.sports],["/news?category=business",t.business],["/news?category=technology",t.technology],["/news?category=entertainment",t.ent],["/ai-tools",t.tools]].map(([h,x])=><Link key={x} href={pre+h}>{x}</Link>)}</nav></header>
+ <header className="head"><div className="head-row"><Logo locale={l}/><form className="main-search" action="/search"><input type="hidden" name="locale" value={l}/><input name="q" placeholder={t.search}/><button>⌕</button></form><div className="head-tools"><LanguageSwitcher/><ThemeToggle/>{user&&<NotificationBell locale={l} items={notifications}/>}<MobileMenu locale={l}/></div></div>
+ <nav className="nav">{[["",t.home],["/news",t.latest],["/news?breaking=1",t.breaking],["/trending",t.trending],["/news?category=education",t.education],["/news?category=exams",t.exams],["/news?category=results",t.results],["/jobs",t.jobs],["/news?category=government",t.government],["/results?type=lottery",t.lottery],["/news?category=sports",t.sports],["/news?category=business",t.business],["/news?category=entertainment",t.ent],["/news?category=technology",t.technology],["/ai-tools",t.tools]].map(([h,x])=><Link key={x} href={pre+h}>{x}</Link>)}</nav></header>
  <div className="mobile-head"><MobileMenu locale={l}/><Logo locale={l}/><LanguageSwitcher/><ThemeToggle/></div>
  <div className="mobile-search"><form action="/search"><input type="hidden" name="locale" value={l}/><input name="q" placeholder={t.search}/><button>⌕</button></form></div>
  <div className="breaking"><b>⚡ {t.breaking}</b><div className="breaking-track"><span>{hero?titleOf(hero,l):t.today}</span></div><i>‹　›</i></div>
