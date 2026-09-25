@@ -63,5 +63,3 @@ export default function LocaleHomePage() {
     <nav className="bottom-nav"><Link href="/bn">⌂<span>Home</span></Link><Link href="/bn/news">▤<span>News</span></Link><Link href="/bn/jobs">💼<span>Jobs</span></Link><Link href="/ai-tools">✦<span>Tools</span></Link><Link href="/account">◉<span>Account</span></Link></nav>
   </main>;
 }
-
-[executed on device: DESKTOP-R4EIOQN (2c64c727-0f9e-4db1-8d42-1bcb315452e0)]
