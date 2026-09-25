@@ -332,3 +332,52 @@ footer.footer-slim small{position:absolute;left:0;right:0;bottom:4px;text-align:
   @keyframes mrDot{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.35);opacity:1}}
   @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 }
+
+/* SECTION-BY-SECTION DYNAMIC VISUAL SYSTEM — mobile only */
+@media(max-width:900px){
+  .mr-screen{--blue:#087ff2;--purple:#7257ff;--green:#13b86b;--orange:#ff9d25;--pink:#ff4f83;--cyan:#08a8d9}
+  /* Every major content block gets its own visual surface without changing layout */
+  .mr-section-head{background:linear-gradient(90deg,rgba(8,127,242,.075),rgba(114,87,255,.035),transparent)!important;border-radius:10px!important;padding:7px 8px!important}
+  .mr-section-head b{display:flex!important;align-items:center!important;gap:6px!important}
+  .mr-section-head b:before{content:"";width:5px;height:18px;border-radius:5px;background:linear-gradient(#087ff2,#7257ff,#ff4f83);box-shadow:0 2px 7px rgba(8,127,242,.22)}
+  /* latest/news */
+  .mr-list{background:linear-gradient(180deg,#fff,#f8fcff)!important;border:1px solid #e3f0f8!important;border-radius:14px!important;padding:3px!important;box-shadow:0 7px 20px rgba(15,91,137,.07)!important}
+  .mr-list .mr-story:nth-child(odd){background:linear-gradient(90deg,#f1f9ff,#fff)!important}
+  .mr-list .mr-story:nth-child(even){background:linear-gradient(90deg,#faf7ff,#fff)!important}
+  .mr-list .mr-story{border-radius:10px!important;margin:2px 0!important;border-bottom:0!important}
+  /* jobs */
+  .job-list{background:linear-gradient(180deg,#f2fbff,#fff8f1)!important;border-radius:14px!important;padding:4px!important;border:1px solid #e1eef6!important}
+  .job-card{position:relative!important;overflow:hidden!important;background:#fff!important}
+  .job-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#087ff2,#19c58a)!important}
+  .job-card:nth-child(2):before{background:linear-gradient(#7257ff,#e85cff)!important}.job-card:nth-child(3):before{background:linear-gradient(#ff9d25,#ff4f83)!important}
+  /* education */
+  .mr-screen .education-section{background:linear-gradient(135deg,#f0f9ff,#f8f4ff)!important;border-radius:15px!important;padding:4px!important}
+  /* results */
+  .result-list{background:linear-gradient(180deg,#f7f4ff,#f1fbff)!important;border-radius:15px!important;padding:4px!important;border:1px solid #e5defd!important}
+  .result-card{position:relative!important;overflow:hidden!important;background:rgba(255,255,255,.92)!important}
+  .result-card:after{content:"";position:absolute;width:55px;height:55px;right:-22px;top:-22px;border-radius:50%;background:linear-gradient(135deg,#087ff2,#7257ff);opacity:.07!important}
+  /* AI tools */
+  .tool-grid{background:linear-gradient(135deg,#eefaff,#f5f0ff,#fff7ee)!important;border-radius:16px!important;padding:7px!important;border:1px solid #dfedf8!important}
+  .tool-card{position:relative!important;overflow:hidden!important}
+  .tool-card:before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:linear-gradient(90deg,#087ff2,#7257ff,#ff4f83,#13b86b);background-size:220% 100%;animation:mrGradient 4s ease infinite}
+  .tool-card:nth-child(4n+1) .tool-card-icon{background:#e8f5ff!important}.tool-card:nth-child(4n+2) .tool-card-icon{background:#f1eaff!important}.tool-card:nth-child(4n+3) .tool-card-icon{background:#e8fbf3!important}.tool-card:nth-child(4n) .tool-card-icon{background:#fff0e4!important}
+  /* Resume */
+  .resume-features{background:linear-gradient(90deg,#eefaff,#f5f0ff,#fff7ed)!important;border-radius:14px!important;padding:7px!important;box-shadow:0 5px 15px rgba(45,91,150,.07)!important}
+  .resume-features>div{border:1px solid rgba(255,255,255,.9)!important;box-shadow:0 3px 9px rgba(30,90,140,.07)!important}
+  /* account */
+  .account-page{background:linear-gradient(180deg,#f5fbff,#fbf8ff)!important;border-radius:16px!important}
+  .guest{background:linear-gradient(135deg,#ffffff,#edf8ff)!important;border:1px solid #d8ebf7!important;box-shadow:0 8px 20px rgba(17,102,158,.09)!important}
+  /* search */
+  .recent-search{background:linear-gradient(135deg,#f0f9ff,#f8f4ff)!important;border-radius:14px!important;padding:5px!important}
+  .recent-search a{background:#fff!important;border-radius:8px!important;margin:2px 0!important;border:1px solid #e6eef7!important}
+  /* notifications */
+  .notify-list{background:linear-gradient(180deg,#f4fbff,#fff7fb)!important;border-radius:14px!important;padding:4px!important;border:1px solid #e3edf6!important}
+  .notify-list a{background:#fff!important;border-radius:9px!important;margin:3px 0!important;border:1px solid #edf2f7!important;box-shadow:0 2px 7px rgba(20,90,130,.04)!important}
+  /* article info blocks */
+  .info{border:1px solid #cfe7fb!important;background:linear-gradient(135deg,#eaf7ff,#f2f0ff)!important;box-shadow:0 5px 14px rgba(20,101,160,.08)!important;border-radius:12px!important}
+  .info:nth-of-type(2){background:linear-gradient(135deg,#fff5ef,#fff0f6)!important;border-color:#ffd8df!important}
+  /* all primary section containers get crisp separation */
+  .mr-section-head + .mr-list,.mr-section-head + .job-list,.mr-section-head + .result-list{margin-top:4px!important}
+  @keyframes mrGradient{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+  @media(prefers-reduced-motion:reduce){.tool-card:before{animation:none!important}}
+}
