@@ -1,5 +1,51 @@
-import Link from "next/link";import {createClient} from "@/lib/supabase/server";import {redirect} from "next/navigation";
-async function login(f:FormData){"use server";const s=await createClient();const locale=String(f.get("locale")||"bn");const email=String(f.get("email")||"");const password=String(f.get("password")||"");const {error}=await s.auth.signInWithPassword({email,password});if(error)redirect("/login?locale="+locale+"&error=1");redirect("/account?locale="+locale);}
-async function signup(f:FormData){"use server";const s=await createClient();const locale=String(f.get("locale")||"bn");const email=String(f.get("email")||"");const password=String(f.get("password")||"");const name=String(f.get("name")||"");const {error}=await s.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)redirect("/login?locale="+locale+"&error=1");redirect("/login?locale="+locale+"&registered=1");}
-const ui={bn:{back:"← কী চলছে",title:"লগইন",failed:"লগইন হয়নি। ইমেইল ও পাসওয়ার্ড যাচাই করুন।",registered:"রেজিস্ট্রেশন পাঠানো হয়েছে। ইমেইল নিশ্চিত করে লগইন করুন।",signin:"সাইন ইন",email:"ইমেইল",password:"পাসওয়ার্ড",login:"লগইন",create:"নতুন অ্যাকাউন্ট",name:"নাম",register:"রেজিস্টার"},hi:{back:"← Kicholche",title:"लॉगिन",failed:"लॉगिन विफल। ईमेल और पासवर्ड जाँचें।",registered:"पंजीकरण भेज दिया गया। ईमेल की पुष्टि करके लॉगिन करें।",signin:"साइन इन",email:"ईमेल",password:"पासवर्ड",login:"लॉगिन",create:"खाता बनाएँ",name:"नाम",register:"रजिस्टर"},en:{back:"← Kicholche",title:"Login",failed:"Login failed. Check your email and password.",registered:"Registration submitted. Confirm your email if required, then log in.",signin:"Sign in",email:"Email",password:"Password",login:"Log in",create:"Create account",name:"Name",register:"Register"}} as const;
-export default async function Login({searchParams}:{searchParams:Promise<{error?:string;registered?:string;locale?:string}>}){const p=await searchParams;const locale=(["bn","hi","en"].includes(p.locale||"")?p.locale:"bn") as "bn"|"hi"|"en";const t=ui[locale];return <main className="placeholder-page"><Link href={"/"+locale}>{t.back}</Link><h1>{t.title}</h1>{p.error&&<p>{t.failed}</p>}{p.registered&&<p>{t.registered}</p>}<form action={login} className="admin-form"><h2>{t.signin}</h2><input type="hidden" name="locale" value={locale}/><label>{t.email}<input name="email" type="email" required/></label><label>{t.password}<input name="password" type="password" required/></label><button className="admin-btn">{t.login}</button></form><form action={signup} className="admin-form"><h2>{t.create}</h2><input type="hidden" name="locale" value={locale}/><label>{t.name}<input name="name"/></label><label>{t.email}<input name="email" type="email" required/></label><label>{t.password}<input name="password" type="password" minLength={6} required/></label><button className="admin-btn light">{t.register}</button></form></main>}
+﻿import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+
+async function login(f: FormData) {
+  "use server";
+  const s = await createClient();
+  const locale = String(f.get("locale") || "bn");
+  const email = String(f.get("email") || "").trim();
+  const password = String(f.get("password") || "");
+  const { error } = await s.auth.signInWithPassword({ email, password });
+  if (error) redirect(`/login?locale=${locale}&error=1`);
+  redirect(`/account?locale=${locale}`);
+}
+
+async function signup(f: FormData) {
+  "use server";
+  const s = await createClient();
+  const locale = String(f.get("locale") || "bn");
+  const email = String(f.get("email") || "").trim();
+  const password = String(f.get("password") || "");
+  const name = String(f.get("name") || "").trim();
+  const { data, error } = await s.auth.signUp({ email, password, options: { data: { display_name: name } } });
+  if (error) redirect(`/login?locale=${locale}&error=1`);
+  if (data.session) redirect(`/account?locale=${locale}`);
+  redirect(`/login?locale=${locale}&registered=1`);
+}
+
+export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string; registered?: string; locale?: string }> }) {
+  const p = await searchParams;
+  const locale = ["bn", "hi", "en"].includes(p.locale || "") ? p.locale! : "bn";
+  return <main className="placeholder-page">
+    <Link href={`/${locale}`}>← Kicholche</Link>
+    <h1>Account</h1>
+    {p.error && <p className="auth-error">Login or registration failed. Please check your email/password or use another email.</p>}
+    {p.registered && <p className="auth-success">Account created. If email confirmation is enabled, confirm your email first, then log in.</p>}
+    <form action={login} className="admin-form">
+      <h2>Sign in</h2><input type="hidden" name="locale" value={locale}/>
+      <label>Email<input name="email" type="email" autoComplete="email" required/></label>
+      <label>Password<input name="password" type="password" autoComplete="current-password" required/></label>
+      <button className="admin-btn" type="submit">Log in</button>
+    </form>
+    <form action={signup} className="admin-form">
+      <h2>Create account</h2><input type="hidden" name="locale" value={locale}/>
+      <label>Name<input name="name" autoComplete="name"/></label>
+      <label>Email<input name="email" type="email" autoComplete="email" required/></label>
+      <label>Password<input name="password" type="password" autoComplete="new-password" minLength={6} required/></label>
+      <button className="admin-btn light" type="submit">Register</button>
+    </form>
+  </main>;
+}
