@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function ArticlePage(){return <main className="placeholder-page"><Link href="/bn">← Kicholche</Link><h1>দুর্যোগপূর্ণ আবহাওয়ার বার্তা</h1><p>এই article page-এ সম্পূর্ণ খবর, source, update এবং related content থাকবে।</p></main>}

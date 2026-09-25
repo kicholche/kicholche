@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function TrendingPage(){return <main className="placeholder-page"><Link href="/bn">← Kicholche</Link><h1>আজকের ট্রেন্ডিং</h1><p>সবচেয়ে বেশি দেখা ও আলোচিত আপডেট।</p></main>}

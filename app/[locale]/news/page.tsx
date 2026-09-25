@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NewsPage(){return <main className="placeholder-page"><Link href="/bn">← Kicholche</Link><h1>সর্বশেষ খবর</h1><p>কী চলছে-এর সব সাম্প্রতিক খবর এখানে প্রকাশিত হবে।</p></main>}
