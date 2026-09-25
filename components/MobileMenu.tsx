@@ -1,0 +1,6 @@
+"use client";
+import {useState} from "react";
+import Link from "next/link";
+export default function MobileMenu({locale}:{locale:string}){const [open,setOpen]=useState(false);const t=locale==="hi"?["मुख्य पृष्ठ","समाचार","नौकरियाँ","शिक्षा","परिणाम","सरकारी अपडेट","खाता"]:locale==="en"?["Home","News","Jobs","Education","Results","Government Updates","Account"]:["হোম","খবর","চাকরি","শিক্ষা","রেজাল্ট","সরকারি আপডেট","অ্যাকাউন্ট"];const hrefs=[`/${locale}`,`/${locale}/news`,`/${locale}/jobs`,`/${locale}/news?category=education`,`/${locale}/news?category=results`,`/${locale}/news?category=government`,"/account"];
+ return <div className="mobile-menu-wrap"><button type="button" className="menu-toggle" onClick={()=>setOpen(!open)} aria-expanded={open} aria-label="Open navigation">{open?"×":"☰"}</button>{open&&<><button className="menu-scrim" aria-label="Close menu" onClick={()=>setOpen(false)}/><nav className="mobile-menu">{t.map((label,i)=><Link key={label} href={hrefs[i]} onClick={()=>setOpen(false)}>{label}</Link>)}</nav></>}</div>;
+}
