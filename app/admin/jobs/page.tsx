@@ -24,7 +24,7 @@ async function createJob(f: FormData) {
  if(translationError){await s.from("jobs").delete().eq("id",data.id);throw new Error(translationError.message)}
  revalidatePath("/admin/jobs");
 }
-async function setStatus(f:FormData){"use server";const s=await createClient();await s.from("jobs").update({status:String(f.get("status"))}).eq("id",String(f.get("id")));revalidatePath("/admin/jobs")}
+async function setStatus(f:FormData){"use server";const s=await createClient();await s.from("jobs").update({status:String(f.get("status"))}).eq("id",String(f.get("id")));revalidatePath("/admin/jobs");revalidatePath("/bn");revalidatePath("/hi");revalidatePath("/en")}
 export default async function JobsAdmin(){
  const s=await createClient();
  const {data}=await s.from("jobs").select("id,slug,job_type,company,location,status,created_at,original_locale,job_translations(title,locale)").order("created_at",{ascending:false});
