@@ -565,3 +565,25 @@ body.mr-dark .mr-notify-panel{background:#152438;color:#e9f2fc;border-color:#2d4
 
 /* MOBILE MENU VISIBILITY — keeps the same control size/position */
 @media(max-width:900px){.mr-home-actions>button:nth-of-type(3){font-size:18px!important;color:#075bcf!important}.mr-home-actions>button:nth-of-type(3):before{display:none!important}}
+/* MOBILE FINAL CONTROL POLISH — duplicated glyphs fixed; layout unchanged */
+@media(max-width:900px){
+  .mr-bottom a b{font-size:0!important;width:28px;height:28px;display:block;position:relative;color:currentColor!important}
+  .mr-bottom a b:before{width:24px!important;height:24px!important;margin:auto!important;display:block!important;background:currentColor!important}
+  .mr-bottom a{position:relative;overflow:visible!important}
+  .mr-bottom a:after{content:"";position:absolute;left:50%;bottom:5px;width:4px;height:4px;border-radius:50%;background:currentColor;transform:translateX(-50%) scale(0);transition:transform .2s ease}
+  .mr-bottom a.on:after{transform:translateX(-50%) scale(1)}
+  .mr-bottom a:active{transform:translateY(-4px) scale(.96)!important}
+  .mr-bottom a:active b:before{transform:scale(1.18)!important}
+  .mr-home-actions>button{font-size:0!important;color:#075bcf!important}
+  .mr-home-actions>button:before{display:block!important;width:19px!important;height:19px!important;background:#075bcf!important;transform:scale(1);transition:transform .18s ease,filter .18s ease}
+  .mr-home-actions>button:active:before{transform:scale(1.18)!important;filter:drop-shadow(0 4px 7px #075bcf55)}
+  .mr-home-actions>button:nth-of-type(3):before{display:block!important}
+  .mr-home-actions>button:nth-of-type(3){font-size:0!important}
+  .mr-search{cursor:pointer!important;transition:transform .16s ease,box-shadow .16s ease!important}
+  .mr-search:active{transform:scale(.985)!important;box-shadow:0 4px 14px #075bcf22!important}
+  .mr-breaking>a{cursor:pointer;transition:transform .16s ease}.mr-breaking>a:active{transform:translateX(2px)}
+  .mobile-extra-card,.mr-bluebox,.mr-story,.mr-quick a{transition:transform .18s ease,box-shadow .18s ease!important}
+  .mobile-extra-card:active,.mr-story:active,.mr-quick a:active{transform:translateY(-2px)!important;box-shadow:0 9px 20px #12325218!important}
+  .mobile-extra-grid a:active{transform:scale(.97);background:#dceeff!important}
+  .mobile-back-top{transition:transform .18s ease,box-shadow .18s ease}.mobile-back-top:active{transform:translateY(-2px) scale(.98);box-shadow:0 7px 16px #075bcf22}
+}
