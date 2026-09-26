@@ -397,3 +397,31 @@ footer.footer-slim small{position:absolute;left:0;right:0;bottom:4px;text-align:
 .mr-section-head b:before{animation:mrIconGlow 2.6s ease-in-out infinite!important}@keyframes mrIconGlow{0%,100%{box-shadow:0 2px 7px rgba(8,127,242,.2)}50%{box-shadow:0 2px 14px rgba(114,87,255,.5)}}
 @media(prefers-reduced-motion:reduce){.mr-quick a,.mr-quick .quick-icon,.tool-card>b,.job-icon,.mr-bottom a b{transition:none!important}.mr-section-head b:before{animation:none!important}}
 }
+
+/* MOBILE DYNAMIC ICON SYSTEM v2 — visual positions/layout locked; icons + micro-interactions only */
+@media(max-width:900px){
+  .mr-home-actions button,.mr-head-icons span,.mr-back,.mr-top .mr-logo,.mr-bottom a b,.mr-quick .quick-icon,.tool-card>b,.job-icon,.mr-filters button,.mr-tabs button,.share-row button,.account-page>a>b,.notify-list a>b,.search-big>button,.mr-primary,.follow-modal .close{position:relative;isolation:isolate;will-change:transform,filter}
+  .mr-home-actions button,.mr-head-icons span{transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease,filter .22s ease!important}
+  .mr-home-actions button:active,.mr-head-icons span:active,.mr-back:active,.mr-filters button:active,.mr-tabs button:active,.share-row button:active,.account-page>a:active,.notify-list a:active,.search-big>button:active,.follow-modal .close:active{transform:translateY(-2px) scale(.94)!important;filter:saturate(1.25)!important}
+  .mr-home-actions button:not(:first-child),.mr-head-icons span{animation:iconBreath 3.2s ease-in-out infinite}
+  .mr-home-actions button:nth-child(3),.mr-head-icons span:nth-child(3){animation-delay:.45s}.mr-home-actions button:nth-child(4){animation-delay:.9s}
+  .mr-home-actions button:before,.mr-head-icons span:before,.mr-back:before,.mr-bottom a b:after,.mr-quick .quick-icon:after,.tool-card>b:after,.job-icon:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transform:scale(.65);background:radial-gradient(circle,rgba(60,174,255,.25),transparent 68%)}
+  .mr-home-actions button:active:before,.mr-head-icons span:active:before,.mr-back:active:before,.mr-bottom a:active b:after,.mr-quick a:active .quick-icon:after,.tool-card:active>b:after,.job-card:active .job-icon:after{opacity:1;transform:scale(1.7);transition:transform .35s ease,opacity .35s ease}
+  .mr-logo{transition:transform .25s ease,filter .25s ease!important}.mr-logo:active{transform:scale(.97)!important;filter:drop-shadow(0 5px 8px rgba(22,111,180,.2))!important}
+  .mr-quick a:nth-child(1) .quick-icon{animation:iconFloat 3.8s ease-in-out infinite}.mr-quick a:nth-child(2) .quick-icon{animation:iconFloat 4.1s ease-in-out .2s infinite}.mr-quick a:nth-child(3) .quick-icon{animation:iconFloat 3.6s ease-in-out .35s infinite}.mr-quick a:nth-child(4) .quick-icon{animation:iconFloat 4.3s ease-in-out .15s infinite}
+  .mr-quick a:nth-child(5) .quick-icon{animation:iconFloat 3.9s ease-in-out .5s infinite}.mr-quick a:nth-child(6) .quick-icon{animation:iconFloat 4.2s ease-in-out .25s infinite}.mr-quick a:nth-child(7) .quick-icon{animation:iconFloat 3.7s ease-in-out .4s infinite}.mr-quick a:nth-child(8) .quick-icon{animation:iconFloat 4s ease-in-out .1s infinite}
+  .mr-quick .quick-icon:after,.tool-card>b:after{box-shadow:0 0 18px rgba(20,139,230,.18)}
+  .tool-card:nth-child(3n+1)>b{animation:iconFloat 4s ease-in-out infinite}.tool-card:nth-child(3n+2)>b{animation:iconFloat 4.4s ease-in-out .3s infinite}.tool-card:nth-child(3n)>b{animation:iconFloat 3.7s ease-in-out .6s infinite}
+  .job-icon{animation:jobPulse 3.4s ease-in-out infinite}.mr-bottom a:nth-child(1) b{animation:iconBreath 3s ease-in-out infinite}.mr-bottom a:nth-child(2) b{animation:iconBreath 3.2s ease-in-out .2s infinite}.mr-bottom a:nth-child(3) b{animation:iconBreath 3.4s ease-in-out .4s infinite}.mr-bottom a:nth-child(4) b{animation:iconBreath 3.1s ease-in-out .6s infinite}.mr-bottom a:nth-child(5) b{animation:iconBreath 3.3s ease-in-out .8s infinite}
+  .mr-tabs button,.mr-filters button{transition:transform .2s ease,box-shadow .2s ease,background .2s ease!important}.mr-tabs button.active{box-shadow:0 4px 12px rgba(15,113,196,.16)!important;animation:tabGlow 2.8s ease-in-out infinite}
+  .mr-filters button:first-child:before{content:"⌕";display:inline-block;margin-right:4px;animation:iconSpin 3s ease-in-out infinite}.mr-filters button:last-child{font-size:0!important}.mr-filters button:last-child:after{content:"⚙";font-size:15px;display:inline-block;animation:gearSpin 5s linear infinite}
+  .mr-bottom a.on b{animation:activeNav 2.2s ease-in-out infinite!important}.mr-bottom a.on:after{content:"";position:absolute;left:50%;bottom:0;width:18px;height:3px;border-radius:9px;background:linear-gradient(90deg,#087ff2,#7b55ff,#ff4f83);transform:translateX(-50%);box-shadow:0 0 9px rgba(74,105,255,.4)}
+  @keyframes iconBreath{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-1px) scale(1.045)}}
+  @keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-2px) rotate(-2deg)}}
+  @keyframes jobPulse{0%,100%{transform:scale(1);box-shadow:0 4px 10px rgba(20,100,150,.08)}50%{transform:scale(1.035);box-shadow:0 7px 16px rgba(20,100,150,.16)}}
+  @keyframes activeNav{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.08)}}
+  @keyframes tabGlow{0%,100%{filter:saturate(1)}50%{filter:saturate(1.18)}}
+  @keyframes iconSpin{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(-12deg)}}
+  @keyframes gearSpin{0%,78%,100%{transform:rotate(0)}88%{transform:rotate(35deg)}}
+  @media(prefers-reduced-motion:reduce){.mr-home-actions button,.mr-head-icons span,.mr-quick .quick-icon,.tool-card>b,.job-icon,.mr-bottom a b,.mr-tabs button.active{animation:none!important}}
+}
