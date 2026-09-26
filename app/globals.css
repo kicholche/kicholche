@@ -562,3 +562,6 @@ body.mr-dark .mr-notify-panel{background:#152438;color:#e9f2fc;border-color:#2d4
 
 /* MOBILE HEADER ICON CONTRAST — makes real SVG icons visible on white control buttons */
 @media(max-width:900px){.mr-home-actions>button:before{background:#075bcf!important}.mr-home-actions>button:active:before{background:#064fae!important}.mr-home-actions .kc-lang:before{background:#075bcf!important}}
+
+/* MOBILE MENU VISIBILITY — keeps the same control size/position */
+@media(max-width:900px){.mr-home-actions>button:nth-of-type(3){font-size:18px!important;color:#075bcf!important}.mr-home-actions>button:nth-of-type(3):before{display:none!important}}
