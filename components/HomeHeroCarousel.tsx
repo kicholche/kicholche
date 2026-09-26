@@ -50,9 +50,9 @@ export default function HomeHeroCarousel({ slides }: { slides: Slide[] }) {
         if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1);
       }}
     >
-      <div className="hero-carousel-stage" key={slide.id}>
+      <div className="hero-carousel-stage">
         {slide.image ? (
-          <img className="visual-img hero-carousel-image" src={slide.image} alt={slide.alt || slide.title} />
+          <img key={slide.id} className="visual-img hero-carousel-image" src={slide.image} alt={slide.alt || slide.title} />
         ) : (
           <div className="visual visual-mountain hero-carousel-image" aria-hidden="true"><span /></div>
         )}
@@ -78,7 +78,7 @@ export default function HomeHeroCarousel({ slides }: { slides: Slide[] }) {
               />
             ))}
           </div>
-          <span className="hero-auto-state">{paused ? "Ⅱ" : "▶ 4s"}</span>
+          <span className="hero-auto-state">{paused ? "Ⅱ" : "▶ 3s"}</span>
         </>
       )}
     </article>
